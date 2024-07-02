@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.h-screen90 {
+    height: 90vh;
+}
+
+.h-screen100 {
+    height: 100vh;
+}
+
+.h-screen110 {
+    height: 110vh;
+}
+
+.h-screen120 {
+    height: 120vh;
+}
+
+.h-screen130 {
+    height: 130vh;
+}
