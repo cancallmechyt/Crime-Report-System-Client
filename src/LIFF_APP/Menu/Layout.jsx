@@ -12,7 +12,6 @@ const Layout = ({ children }) => {
   );
 };
 
-// Add propTypes for children to ensure correct props validation
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 };

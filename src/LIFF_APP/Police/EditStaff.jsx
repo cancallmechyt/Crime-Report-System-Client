@@ -72,11 +72,9 @@ function EditStaff() {
           formData.append("note", value.note);
           formData.append("pid", pid);
 
-          // เพิ่มเช็คว่ามีการเลือกไฟล์ใหม่หรือไม่
           if (selectedImage) {
             formData.append("file", selectedImage);
           } else {
-            // หากไม่มีการเลือกไฟล์ใหม่ ให้ใช้รูปภาพเดิมโดยไม่เปลี่ยนแปลง
             formData.append("image", value.image);
           }
 
@@ -129,8 +127,8 @@ function EditStaff() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(file); // get new select image
-        setImagePreview(reader.result); // show new image
+        setSelectedImage(file); 
+        setImagePreview(reader.result); 
       };
       reader.readAsDataURL(file);
     }

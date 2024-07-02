@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import useAxios from '../../useAxios';
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
+import { useState } from "react";
+import useAxios from "../../useAxios";
 
 function AddEmergency() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -11,86 +11,119 @@ function AddEmergency() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const title = document.getElementById('title').value;
-    const detail = document.getElementById('detail').value;
-    const location = document.getElementById('location').value;
-    const category = document.getElementById('category').value;
-    const note = document.getElementById('note').value;
-    const fileInput = document.getElementById('file');
+    const title = document.getElementById("title").value;
+    const detail = document.getElementById("detail").value;
+    const location = document.getElementById("location").value;
+    const category = document.getElementById("category").value;
+    const note = document.getElementById("note").value;
+    const fileInput = document.getElementById("file");
     const file = fileInput.files[0];
-  
+
     const formData = new FormData();
-      formData.append('title', title);
-      formData.append('detail', detail);
-      formData.append('location', location);
-      formData.append('file', file);
-      formData.append('category', category);
-      formData.append('poststatus', 'เหตุฉุกเฉิน');
-      formData.append('note', note);
+    formData.append("title", title);
+    formData.append("detail", detail);
+    formData.append("location", location);
+    formData.append("file", file);
+    formData.append("category", category);
+    formData.append("poststatus", "เหตุฉุกเฉิน");
+    formData.append("note", note);
 
     try {
       if (title && detail) {
-        const response = await useAxios.post('/posts/addnews', formData);              
+        const response = await useAxios.post("/posts/addnews", formData);
         const data = await useAxios.get(`/posts/${response.data}`);
-  
+
         const info = {
-          pid : data.data[0].pid,
-          category : data.data[0].category,
-          title : data.data[0].title,
-          detail : data.data[0].detail,
-          image : "https://localhost:5000/posts/pic/00.jpg",
-          location : data.data[0].location
+          pid: data.data[0].pid,
+          category: data.data[0].category,
+          title: data.data[0].title,
+          detail: data.data[0].detail,
+          image: data.data[0].imageUrl,
+          location: data.data[0].location,
         };
 
-        await useAxios.post('/line/emergency', info);
-        
+        await useAxios.post("/line/emergency", info);
+
         Swal.fire({
           title: "แจ้งเหตุฉุกเฉินเรียบร้อย",
           icon: "success",
           confirmButtonText: "ตกลง",
         }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.reload(); 
-            }
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
         });
-              } else {
-              Swal.fire({
-                  title: "กรุณากรอกข้อมูลให้ครบถ้วน",
-                  icon: "warning",
-                  confirmButtonText: "ตกลง",
-              });
-            }
-        } catch (error) { console.error('Error:', error); }
+      } else {
+        Swal.fire({
+          title: "กรุณากรอกข้อมูลให้ครบถ้วน",
+          icon: "warning",
+          confirmButtonText: "ตกลง",
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
-    <div className="p-4 sm:ml-64" >
-        <h1 className="mb-1">เพิ่มรายการแจ้งเหตุฉุกเฉิน</h1>
+    <div className="p-4 sm:ml-64">
+      <h1 className="mb-1">เพิ่มรายการแจ้งเหตุฉุกเฉิน</h1>
       <form className="pt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">หัวเรื่อง (หัวข้อ)</label>
-          <input type="text" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="หัวข้อ" required/>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            หัวเรื่อง (หัวข้อ)
+          </label>
+          <input
+            type="text"
+            id="title"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="หัวข้อ"
+            required
+          />
         </div>
 
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">รายละเอียด</label>
-          <textarea id="detail" rows="4" className="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="รายละเอียด"></textarea>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            รายละเอียด
+          </label>
+          <textarea
+            id="detail"
+            rows="4"
+            className="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="รายละเอียด"
+          ></textarea>
         </div>
-        
+
         <div className="grid mt-2 mb-4 gap-6 md:grid-cols-2">
-          <div className=''>
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">หมวดหมู่</label>
-            <select id="category" defaultValue="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="" disabled>เลือกหมวดหมู่</option>
+          <div className="">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              หมวดหมู่
+            </label>
+            <select
+              id="category"
+              defaultValue=""
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="" disabled>
+                เลือกหมวดหมู่
+              </option>
               <option value="เหตุฉุกเฉิน">รายการแจ้งเหตุฉุกเฉิน</option>
               <option value="กิจกรรม">รายการกิจกรรม</option>
             </select>
           </div>
 
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">สถานที่</label>
-            <select id="location" defaultValue="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="" disabled>เลือกสถานที่</option>
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              สถานที่
+            </label>
+            <select
+              id="location"
+              defaultValue=""
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="" disabled>
+                เลือกสถานที่
+              </option>
               <option value="ตึก 1">ตึก 1</option>
               <option value="ตึก 2">ตึก 2</option>
               <option value="ตึก 3">ตึก 3</option>
@@ -110,41 +143,89 @@ function AddEmergency() {
           </div>
 
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">สถานะของรายการ</label>
-            <select id="poststatus" defaultValue="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="" disabled>เลือกสถานะ</option>
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              สถานะของรายการ
+            </label>
+            <select
+              id="poststatus"
+              defaultValue=""
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="" disabled>
+                เลือกสถานะ
+              </option>
               <option value="เหตุฉุกเฉิน">รายการเหตุฉุกเฉิน</option>
               <option value="กิจกรรม">รายการจัดกิจกรรม</option>
-            </select>        
+            </select>
           </div>
 
-          <div className='mb-4'>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">หมายเหตุ</label>
-              <input type="text" id="note" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="หมายเหตุ"/>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              หมายเหตุ
+            </label>
+            <input
+              type="text"
+              id="note"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="หมายเหตุ"
+            />
           </div>
         </div>
 
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">อัพโหลไฟล์รูปภาพ</label>
-          <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file" type="file" onChange={handleImageChange}/>
-          <p className="mt-1 mb-6 text-sm text-gray-500 dark:text-gray-300">PNG or JPG (800x400px).</p>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            อัพโหลไฟล์รูปภาพ
+          </label>
+          <input
+            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            aria-describedby="file_input_help"
+            id="file"
+            type="file"
+            onChange={handleImageChange}
+          />
+          <p className="mt-1 mb-6 text-sm text-gray-500 dark:text-gray-300">
+            PNG or JPG (800x400px).
+          </p>
         </div>
 
         {selectedImage && (
-            <img src={URL.createObjectURL(selectedImage)} alt="Selected" width="150" height="150" />
-          )}
+          <img
+            src={URL.createObjectURL(selectedImage)}
+            alt="Selected"
+            width="150"
+            height="150"
+          />
+        )}
 
         <div className="flex items-start mb-6">
           <div className="flex items-center h-5">
-            <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required />
+            <input
+              id="remember"
+              type="checkbox"
+              value=""
+              className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+              required
+            />
           </div>
-          <label className="mb-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">ตรวจสอบแล้วว่าข้อมูลที่กรอกทั้งหมดมีความ<a className="text-blue-600 hover:underline dark:text-blue-500">ถูกต้อง</a></label>
+          <label className="mb-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+            ตรวจสอบแล้วว่าข้อมูลที่กรอกทั้งหมดมีความ
+            <a className="text-blue-600 hover:underline dark:text-blue-500">
+              ถูกต้อง
+            </a>
+          </label>
         </div>
 
-        <button type="submit" className="text-white bg-customBlue hover:bg-customYellow focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={handleSubmit}required>บันทึก</button>
+        <button
+          type="submit"
+          className="text-white bg-customBlue hover:bg-customYellow focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          onClick={handleSubmit}
+          required
+        >
+          บันทึก
+        </button>
       </form>
     </div>
-  )
+  );
 }
 
-export default AddEmergency
+export default AddEmergency;

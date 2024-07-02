@@ -2,14 +2,10 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useAxios from "../../useAxios";
 import Swal from "sweetalert2";
-import liff from "@line/liff";
-import config from "../../config.json";
 
 function EditForm() {
-  const LIFF_ID = config.LIFF_ID_KEY;
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [profile, setProfile] = useState([]);
   const [userRoleMatch, setRoleMatch] = useState(false);
   const { pid } = useParams();
   const [Cat, setCat] = useState([]);
@@ -24,24 +20,6 @@ function EditForm() {
     poststatus: "",
     note: "",
   });
-
-  useEffect(() => {
-    const initializeLiff = async () => {
-      try {
-        await liff.init({ liffId: LIFF_ID });
-        if (!liff.isLoggedIn()) {
-          liff.login();
-        } else {
-          const userProfile = await liff.getProfile();
-          setProfile(userProfile);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    initializeLiff();
-    return () => {};
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,22 +50,23 @@ function EditForm() {
     const fetchData = async () => {
       try {
         const uid = localStorage.getItem("section");
-        const users = await useAxios.get(`/members/${uid}`);
-        const checkrole = users.data[0].role;
+        if (uid) {
+          const users = await useAxios.get(`/members/${uid}`);
+          const checkrole = users.data[0].role;
 
-        if (checkrole === "police" || checkrole === "admin") {
-          setRoleMatch(true);
-        } else {
-          setRoleMatch(false);
+          if (checkrole === "police" || checkrole === "admin") {
+            setRoleMatch(true);
+          } else {
+            setRoleMatch(false);
+          }
         }
       } catch (error) {
         console.error("Error:", error);
       }
     };
-    if (profile.userId) {
-      fetchData();
-    }
-  }, [profile]);
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

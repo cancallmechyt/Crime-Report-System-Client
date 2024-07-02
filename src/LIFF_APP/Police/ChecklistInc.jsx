@@ -3,6 +3,8 @@ import useAxios from "../../useAxios";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import config from "../../config.json";
+import dayjs from "dayjs";
+dayjs.locale("th");
 
 function CheckList() {
   const [data, setData] = useState([]);
@@ -17,7 +19,7 @@ function CheckList() {
         const response = await useAxios.get("/posts/category/แจ้งเหตุ");
         const posts = response.data.map((post) => {
           const dateObject = post.date;
-          const formattedDate = moment(dateObject).format("MMM DD, YYYY");
+          const formattedDate = dayjs(dateObject).format("DD MMM YYYY");
 
           return {
             ...post,

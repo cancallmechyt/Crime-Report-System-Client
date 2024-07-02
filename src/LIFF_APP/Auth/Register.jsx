@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import liff from "@line/liff";
 import useAxios from "../../useAxios";
 import config from "../../config.json";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 function Register() {
   const [profile, setProfile] = useState([]);
@@ -44,25 +44,24 @@ function Register() {
       major: major,
       usercode: usercode,
       email: email,
-      password: password
+      password: password,
     };
 
     try {
-      await useAxios.post("/members/register", data); 
+      await useAxios.post("/members/register", data);
       Swal.fire({
         title: "สมัครสมาชิกเรียบร้อยแล้ว",
         icon: "success",
         confirmButtonText: "ตกลง",
       }).then((result) => {
-          if (result.isConfirmed) {
-              window.location.reload(); 
-          }
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
       });
     } catch (error) {
       console.error("Error adding member:", error);
     }
-};
-
+  };
 
   const onLogin = async () => {
     window.location.href = "/login";
@@ -92,73 +91,73 @@ function Register() {
           <div className="mt-4">Loading...</div>
         )}
 
-        <div className="py-4 space-y-4"> 
-            <div className="form-group flex flex-wrap mb-4 ">
-                <div className="w-1/2">
-                    <input
-                        type="text"
-                        className="w-36 p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                        id="fname"
-                        placeholder="ชื่อ"
-                    />
-                </div>
-                <div className="w-1/2">
-                    <input
-                        type="text"
-                        className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                        id="lname"
-                        placeholder="นามสกุล"
-                    />
-                </div>
+        <div className="py-4 space-y-4">
+          <div className="form-group flex flex-wrap mb-4 ">
+            <div className="w-1/2">
+              <input
+                type="text"
+                className="w-36 p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                id="fname"
+                placeholder="ชื่อ"
+              />
             </div>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                    id="college"
-                    placeholder="คณะ/วิทยาลัย"
-                />
+            <div className="w-1/2">
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                id="lname"
+                placeholder="นามสกุล"
+              />
             </div>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                    id="major"
-                    placeholder="สาขาวิชา"
-                />
-            </div>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                    id="usercode"
-                    placeholder="รหัสนักศึกษา/บุคลากร"
-                />
-            </div>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                    id="email"
-                    placeholder="youremail@rsu.ac.th"
-                />
-            </div>
-            <div className="form-group">
-                <input
-                    type="password"
-                    className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                    id="password"
-                    placeholder="**********"
-                />
-            </div>
-            <div className="form-group">
-                <input
-                    type="password"
-                    className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                    id="con-password"
-                    placeholder="**********"
-                />
-            </div>
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              id="college"
+              placeholder="คณะ/วิทยาลัย"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              id="major"
+              placeholder="สาขาวิชา"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              id="usercode"
+              placeholder="รหัสนักศึกษา/บุคลากร"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              id="email"
+              placeholder="youremail@rsu.ac.th"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              id="password"
+              placeholder="**********"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              id="con-password"
+              placeholder="**********"
+            />
+          </div>
         </div>
 
         <div className="mt-2">

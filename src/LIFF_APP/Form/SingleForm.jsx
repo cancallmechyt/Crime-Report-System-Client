@@ -1,8 +1,9 @@
 import useAxios from "../../useAxios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import dayjs from "dayjs"; 
+dayjs.locale("th");
 import moment from "moment";
-import { Link } from "react-router-dom";
 import config from "../../config.json";
 
 function SingleForm() {
@@ -21,7 +22,7 @@ function SingleForm() {
           setStatus(response.data[0].poststatus === "เสร็จสิ้น" ? true : false);
           const posts = response.data.map((post) => {
             const dateObject = post.date;
-            const formattedDate = moment(dateObject).format("MMM DD, YYYY");
+            const formattedDate = dayjs(dateObject).format("DD MMM YYYY");
             return {
               ...post,
               Date: formattedDate,
@@ -111,7 +112,7 @@ function SingleForm() {
                   alt="Location Marker"
                 />
                 <p className="ml-2 font-bold text-customGrays">
-                  {item.location} {item.Date}
+                  {item.location}  •  {item.Date}
                   {" • " + moment(item.time, "HH:mm").format("HH:mm") + " น."}
                 </p>
                 <br />

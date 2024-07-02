@@ -38,7 +38,7 @@ function Emergency() {
             category: data.data[0].category,
             title: data.data[0].title,
             detail: data.data[0].detail,
-            image: "https://localhost:5000/posts/pic/00.jpg", // (data.data[0].imageUrl) change before upload API to server
+            image: data.data[0].imageUrl,
             location: data.data[0].location,
           };
 

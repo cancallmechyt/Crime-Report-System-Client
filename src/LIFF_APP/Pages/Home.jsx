@@ -4,26 +4,22 @@ import liff from "@line/liff";
 import useAxios from "../../useAxios";
 import moment from "moment";
 import config from "../../config.json";
+import dayjs from "dayjs";
+dayjs.locale("th");
 
 function Home() {
-  const [profile, setProfile] = useState([]); // State for storing user profile data
-  const [data, setData] = useState([]); // State for storing fetched data
-  const [query, setQuery] = useState(""); // State for search query
+  const [profile, setProfile] = useState([]);
+  const [data, setData] = useState([]);
+  const [query, setQuery] = useState("");
   const LIFF_ID = config.LIFF_ID_KEY;
 
-  // This useEffect hook is used to initialize LIFF (Line Frontend Framework) upon component mounting.
   useEffect(() => {
     const initializeLiff = async () => {
-      // Defining an asynchronous function to initialize LIFF
       try {
-        // Initializing LIFF with the provided LIFF ID
         await liff.init({ liffId: LIFF_ID });
-        // Checking if the user is logged in to LIFF
         if (!liff.isLoggedIn()) {
-          // If not logged in, prompt the user to log in
           liff.login();
         } else {
-          // If logged in, retrieve the user's profile
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
         }
@@ -38,18 +34,18 @@ function Home() {
   useEffect(() => {
     const fetchAPI = async () => {
       try {
-        const response = await useAxios.get("/posts/category/ของหาย"); // Fetching data from API
+        const response = await useAxios.get("/posts/category/ของหาย");
         const posts = await Promise.all(
           response.data.map(async (post) => {
-            const dateObject = post.date; // Extracting date object from post data
-            const formattedDate = moment(dateObject).format("MMM DD, YYYY"); // Formatting date
+            const dateObject = post.date;
+            const formattedDate = dayjs(dateObject).format("DD MMM YYYY");
             return {
               ...post,
-              Date: formattedDate, // Updating post object with formatted date
+              Date: formattedDate,
             };
           })
         );
-        setData(posts); // Updating state with fetched and formatted data
+        setData(posts);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -57,7 +53,6 @@ function Home() {
     fetchAPI();
   }, []);
 
-  // Images Preview (./public/img)
   const images = ["./pic01.jpg", "./pic02.jpg", "./pic03.jpg"];
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -65,17 +60,17 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       nextImage();
-    }, 15000); // Setting interval for image rotation
+    }, 15000);
 
     return () => clearInterval(interval);
   }, [currentImage]);
 
   const prevImage = () => {
-    setCurrentImage(currentImage === 0 ? images.length - 1 : currentImage - 1); // Moving to previous image
+    setCurrentImage(currentImage === 0 ? images.length - 1 : currentImage - 1);
   };
 
   const nextImage = () => {
-    setCurrentImage(currentImage === images.length - 1 ? 0 : currentImage + 1); // Moving to next image
+    setCurrentImage(currentImage === images.length - 1 ? 0 : currentImage + 1);
   };
 
   return (

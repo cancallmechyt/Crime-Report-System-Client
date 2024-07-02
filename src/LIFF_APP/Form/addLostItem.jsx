@@ -1,41 +1,19 @@
 import { useState, useEffect } from "react";
 import useAxios from "../../useAxios";
 import Swal from "sweetalert2";
-import liff from "@line/liff";
-import config from "../../config.json";
 
 function FormLostItem() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [userRoleMatch, setRoleMatch] = useState(false);
-  const [profile, setProfile] = useState([]);
-  const LIFF_ID = config.LIFF_ID_KEY;
-
-  useEffect(() => {
-    const initializeLiff = async () => {
-      try {
-        await liff.init({ liffId: LIFF_ID });
-        if (!liff.isLoggedIn()) {
-          liff.login();
-        } else {
-          const userProfile = await liff.getProfile();
-          setProfile(userProfile);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    initializeLiff();
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (profile.userId) {
-          const uid = localStorage.getItem("section");
-
+        const uid = localStorage.getItem("section");
+        if (uid) {
           const users = await useAxios.get(`/members/${uid}`);
           const checkrole = users.data[0].role;
-
+  
           if (checkrole === "police" || checkrole === "admin") {
             setRoleMatch(true);
           } else {
@@ -46,8 +24,10 @@ function FormLostItem() {
         console.error("Error:", error);
       }
     };
-    fetchData();
-  }, [profile.userId]);
+  
+    fetchData(); 
+  }, []);
+  
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
@@ -55,7 +35,6 @@ function FormLostItem() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userId = profile.userId;
     const title = document.getElementById("title").value;
     const detail = document.getElementById("detail").value;
     const location = document.getElementById("location").value;
@@ -66,7 +45,6 @@ function FormLostItem() {
     const note = "หมายเหตุ";
 
     const formData = new FormData();
-    formData.append("userId", userId);
     formData.append("title", title);
     formData.append("detail", detail);
     formData.append("location", location);

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import useAxios from "../../useAxios";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
+dayjs.locale("th");
 
 function LostItem() {
   const [data, setData] = useState([]);
@@ -15,7 +17,7 @@ function LostItem() {
         const response = await useAxios.get("/posts/category/ของหาย");
         const posts = response.data.map((post) => {
           const dateObject = post.date;
-          const formattedDate = moment(dateObject).format("MMM DD, YYYY");
+          const formattedDate = dayjs(dateObject).format("DD MMM YYYY");
 
           return {
             ...post,

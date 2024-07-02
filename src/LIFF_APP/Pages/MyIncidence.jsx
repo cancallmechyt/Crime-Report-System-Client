@@ -4,6 +4,8 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import liff from "@line/liff";
 import config from "../../config.json";
+import dayjs from "dayjs";
+dayjs.locale("th");
 
 function MyIncidence() {
   const LIFF_ID = config.LIFF_ID_KEY;
@@ -38,7 +40,7 @@ function MyIncidence() {
           const response = await useAxios.get(`/posts/user/${uid}`);
           const posts = response.data.map((post) => {
             const dateObject = post.date;
-            const formattedDate = moment(dateObject).format("MMM DD, YYYY");
+            const formattedDate = dayjs(dateObject).format("DD MMM YYYY");
             return {
               ...post,
               Date: formattedDate,

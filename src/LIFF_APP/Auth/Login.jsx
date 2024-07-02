@@ -47,7 +47,7 @@ function Login() {
 
       if (token) {
         localStorage.setItem("token", token);
-        localStorage.setItem("section", uid); 
+        localStorage.setItem("section", uid);
 
         const data = await useAxios.get(`/members/${uid}`);
         const role = data.data[0].role;

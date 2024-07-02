@@ -49,7 +49,7 @@ const Profile = () => {
     await useAxios.post("/line/richmenudefault", userinfo);
     localStorage.removeItem("section");
     localStorage.removeItem("token");
-    // liff.logout();
+    liff.logout();
     window.location.href = "/register";
   };
 
